@@ -86,7 +86,6 @@ MAIN PROC
 	  	   
 	  EXIT:	   
 	  	   
-	  	   
-			   
+	  	   		   
 	MAIN ENDP
 END MAIN
