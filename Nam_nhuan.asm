@@ -1,59 +1,35 @@
-org 100h  
-
-include 'emu8086.inc'    
-
-mov cx, 04h
-
- 
-inp:    mov ah, 01h
-        int 21h          
-
-        sub al, 30h    
-        mov bl, al
-        mov ax, dx
-        mov dx, 10h
-        mul dx     
-        
-        mov bh, 00h
-        add ax, bx
-        mov dx, ax
-    loop inp      
-          
-            
-mov ax, dx
-mov dx, 0000h
-mov bx, 64h
-mul bx
-mov bx, 100h
-div bx 
-mov cx, ax
-mov dx, 0000h
-            
-mov bx, 400h
-div bx
-jz yes              
-
-mov ax, cx
-mov bx, 04h
-mov dx, 0000h
-div bx
-jnz no
-
-mov ax, cx   
-mov dx, 0000h
-mov bx, 100h
-div bx
-jnz no
-jz yes
-
-no: 
-    print 'Not a  Leap Year'
-    jmp exit
-
-yes:
-    print 'Leap Year'
-
-exit:
-
-ret
-
+ASSUME DS:DATA1,CS:CODE1
+DATA1 SEGMENT
+MSG DB 0AH,0DH,'nhap nam $'
+NUMBER DB 6,0,6 DUP('$')
+YS DB 0AH,0DH,'la nam nhuan$'
+N DB 0AH,0DH,'khong phai la nam nhuan$'
+DATA1 ENDS
+CODE1 SEGMENT
+START: MOV AX,DATA1
+MOV DS,AX
+LEA DX,MSG
+MOV AH,09H
+INT 21H
+LEA DX,NUMBER
+MOV AH,0AH
+INT 21H
+LEA BX,NUMBER+4
+MOV AH,[BX]
+MOV AL,[BX+1]
+AAD
+MOV BL,04H
+DIV BL
+AND AH,0FFH
+JZ YES
+LEA DX,N
+MOV AH,09H
+INT 21H
+JMP DOWN
+YES:LEA DX,YS
+MOV AH,09H
+INT 21H
+DOWN: MOV AH,4CH
+INT 21H
+CODE1 ENDS
+END START
